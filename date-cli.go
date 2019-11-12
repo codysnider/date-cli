@@ -1,44 +1,44 @@
 package main
 
 import (
-    "log"
-    "os"
-    "fmt"
-    "time"
-    "github.com/urfave/cli"
-    "github.com/araddon/dateparse"
+	"fmt"
+	"github.com/araddon/dateparse"
+	"github.com/urfave/cli"
+	"log"
+	"os"
+	"time"
 )
 
 func main() {
-    app := cli.NewApp()
-    app.Name = "Date CLI"
-    app.Usage = "date-cli [timestamp] [output]"
+	app := cli.NewApp()
+	app.Name = "Date CLI"
+	app.Usage = "date-cli [timestamp] [output]"
 
-    app.Action = func(c *cli.Context) error {
+	app.Action = func(c *cli.Context) error {
 
-        loc, err := time.LoadLocation("GMT")
-        if err != nil {
-            panic(err.Error())
-        }
-        time.Local = loc
+		loc, err := time.LoadLocation("GMT")
+		if err != nil {
+			panic(err.Error())
+		}
+		time.Local = loc
 
-        t, err := dateparse.ParseLocal(c.Args().Get(0))
-        if err != nil {
-            log.Fatal(err)
-        }
+		t, err := dateparse.ParseLocal(c.Args().Get(0))
+		if err != nil {
+			log.Fatal(err)
+		}
 
-        outFmt := c.Args().Get(1)
-        if outFmt == "u" || outFmt == "unix" {
-            fmt.Println(t.Unix())
-        } else {
-            fmt.Println(t)
-        }
+		outFmt := c.Args().Get(1)
+		if outFmt == "u" || outFmt == "unix" {
+			fmt.Println(t.Unix())
+		} else {
+			fmt.Println(t)
+		}
 
-        return nil
-    }
+		return nil
+	}
 
-    err := app.Run(os.Args)
-    if err != nil {
-        log.Fatal(err)
-    }
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
